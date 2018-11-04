@@ -5,20 +5,20 @@ using UnityEngine;
 public class PlayerCharacter : MonoBehaviour {
 
     // Player level motion override, used to ignore input when focus not on player.
-    private bool canMove;
+    public bool CanMove { get; set; }
 
     // Modified used to set player speed
     private static float speedModifier = 3.0F;
 
 	// Use this for initialization
 	void Start () {
-        this.canMove = true;
+        this.CanMove = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         // Ignore input if the player can't currently move
-        if (canMove) { movePlayer(); }
+        if (CanMove) { movePlayer(); }
     }
 
     private void OnGUI()

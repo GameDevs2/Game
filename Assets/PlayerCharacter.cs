@@ -10,8 +10,11 @@ public class PlayerCharacter : MonoBehaviour {
     // Modified used to set player speed
     private static float speedModifier = 3.0F;
 
-	// Use this for initialization
-	void Start () {
+    private static string pathToHead = "Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 Neck/Bip001 Head";
+    private static float headZBaseRot = 5.177F;
+
+    // Use this for initialization
+    void Start () {
         this.CanMove = true;
 	}
 	
@@ -19,6 +22,9 @@ public class PlayerCharacter : MonoBehaviour {
 	void Update () {
         // Ignore input if the player can't currently move
         if (CanMove) { movePlayer(); }
+
+        // Move camera with mouse
+        lookTowardsMouse();
     }
 
     private void OnGUI()
@@ -48,6 +54,22 @@ public class PlayerCharacter : MonoBehaviour {
         }
 
         transform.Translate(direction.normalized * (Time.deltaTime * speedModifier), Space.World);
+    }
+
+    private void lookTowardsMouse()
+    {
+        //Get the head
+        Transform HeadTransform = transform.Find(pathToHead);
+
+        // Figure out new rotation rotation
+        float horizontal = 0.5F * Input.GetAxis("Mouse X");
+        float vertical = 0.5F * -Input.GetAxis("Mouse Y");
+        Vector3 newRotation = HeadTransform.eulerAngles - new Vector3(vertical, horizontal, 0);
+
+        // Need to bind the vertical axis
+
+        //Don't allow rotating too far or things get weird
+        HeadTransform.eulerAngles = newRotation;
     }
 
 }

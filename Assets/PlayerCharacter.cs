@@ -4,44 +4,50 @@ using UnityEngine;
 
 public class PlayerCharacter : MonoBehaviour {
 
+    // Player level motion override, used to ignore input when focus not on player.
+    private bool canMove;
+
+    // Modified used to set player speed
+    private static float speedModifier = 3.0F;
+
 	// Use this for initialization
 	void Start () {
-		
+        this.canMove = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        
-	}
+        // Ignore input if the player can't currently move
+        if (canMove) { movePlayer(); }
+    }
 
     private void OnGUI()
     {
-        Vector3 direction;
-        var currentEvent = Event.current;
-        if (!currentEvent.isKey)
-        {
-            return;
-        }
-        switch (currentEvent.keyCode)
-        {
-            case KeyCode.UpArrow:
-                direction = Vector3.forward;
-                break;
-            case KeyCode.DownArrow:
-                direction = Vector3.back;
-                break;
-            case KeyCode.LeftArrow:
-                direction = Vector3.left;
-                break;
-            case KeyCode.RightArrow:
-                direction = Vector3.right;
-                break;
-            default:
-                return;
-        }
 
-        transform.Translate(direction * Time.deltaTime, Space.World);
+
     }
 
+    private void movePlayer() {
+        Vector3 direction = Vector3.zero;
+
+
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) {
+            direction += Vector3.forward;
+        }
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        {
+            direction += Vector3.left;
+        }
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+        {
+            direction += Vector3.right;
+        }
+        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
+        {
+            direction += Vector3.back;
+        }
+
+        transform.Translate(direction.normalized * (Time.deltaTime * speedModifier), Space.World);
+    }
 
 }

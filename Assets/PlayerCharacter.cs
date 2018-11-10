@@ -9,8 +9,6 @@ public class PlayerCharacter : MonoBehaviour {
 
     // Modified used to set player speed
     private static float speedModifier = 3.0F;
-
-    private static string pathToHead = "Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 Neck/Bip001 Head";
     private static float headZBaseRot = 5.177F;
 
     // Use this for initialization
@@ -58,18 +56,16 @@ public class PlayerCharacter : MonoBehaviour {
 
     private void lookTowardsMouse()
     {
-        //Get the head
-        Transform HeadTransform = transform.Find(pathToHead);
 
         // Figure out new rotation rotation
         float horizontal = 0.5F * Input.GetAxis("Mouse X");
         float vertical = 0.5F * -Input.GetAxis("Mouse Y");
-        Vector3 newRotation = HeadTransform.eulerAngles - new Vector3(vertical, horizontal, 0);
+        Vector3 newRotation = transform.eulerAngles - new Vector3(vertical, horizontal, 0);
 
         // Need to bind the vertical axis
 
         //Don't allow rotating too far or things get weird
-        HeadTransform.eulerAngles = newRotation;
+        transform.eulerAngles = newRotation;
     }
 
 }

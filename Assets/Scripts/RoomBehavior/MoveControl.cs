@@ -1,8 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MoveControl : MonoBehaviour {
+    public Vector3 AddRotation;
+    float lastTriggeredTime = float.NegativeInfinity;
+    float cooldownTime = 3;
 
 	// Use this for initialization
 	void Start () {
@@ -15,9 +16,16 @@ public class MoveControl : MonoBehaviour {
 	}
 
 	private void OnTriggerEnter(Collider other) {
-		if (other.GetComponent<PlayerCharacter>() != null){
-			GameObject room = GameObject.Find("Room");
-			room.GetComponent<Room>().setTargetRotation(new Vector3(90, 0, 0));
-		}
+        if (other.GetComponent<PlayerCharacter>() == null)
+        {
+            return;
+        }
+
+        if (Time.time - lastTriggeredTime > cooldownTime)
+        {
+            lastTriggeredTime = Time.time;
+            GameObject room = GameObject.Find("Room");
+            room.GetComponent<Room>().AddTargetRotation(AddRotation);
+        }
 	}
 }
